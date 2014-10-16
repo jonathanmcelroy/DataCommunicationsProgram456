@@ -14,6 +14,8 @@ public class NuDatResponse extends NuDatMessage {
     private final int DATA_START_INDEX = 8;
     private final int RESPONSE_REQUIRED_LENGTH = 10;
 
+    private final long LARGEST_UNSIGNED_INT = (long)(Math.pow(2, 32) - 1);
+
     private List<String> posts;
 
     ////////////////////
@@ -21,52 +23,102 @@ public class NuDatResponse extends NuDatMessage {
     ////////////////////
 
     public NuDatResponse(byte[] buffer) throws NuDatException {
+        // safety check
         if(buffer == null) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
         }
 
+        // set the error code and queryID
         setErrorCodeFromBuffer(buffer);
         setQueryIdFromBuffer(buffer);
 
+        // if the buffer is too short, stop and raise an exception
         if(buffer.length < RESPONSE_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
         }
 
+        // get the number of posts on the buffer
         int numPosts = getUnsignedShort(buffer, POST_NUM_INDEX);
 
+        // initialize the lists of posts
         this.posts = new ArrayList<String>(numPosts);
+
+        // initialize the index for each post
         int index = DATA_START_INDEX;
+
+        // for each post
         for(int i = 0; i < numPosts; i++) {
+            // if the buffer is not long enough to read 2 bytes, raise an exception
             if(index + 2 > buffer.length) {
                 throw new NuDatException(ErrorCode.PACKETTOOSHORT);
             }
+
+            // get the length of the post
             int postLength = getUnsignedShort(buffer, index);
 
+            // if the buffer is not long enough to read the post, raise an exception
             if(index + 2 + postLength > buffer.length) {
                 throw new NuDatException(ErrorCode.PACKETTOOSHORT);
             }
+
+            // get post string
             String post = new String(buffer, index + 2, postLength);
+
+            // add the post to the list of posts
             this.posts.add(post);
+
+            // move the index to the next post
             index += 2 + postLength;
         }
 
+        // if there is still more data after the last post, then the buffer was too long
         if(buffer.length > index) {
             throw new NuDatException(ErrorCode.PACKETTOOLONG);
         }
     }
 
     public NuDatResponse(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException {
+        // if the errorCode is not null, save it
+        if(errorCode == null) {
+            throw new IllegalArgumentException("ErrorCode must not be null");
+        }
         this.errorCode = errorCode;
 
-        if(queryId < 0 || queryId > Math.pow(2, 32) - 1) {
+        // if the query fits in an unsigned, two-byte integer, save it
+        if(queryId < 0 || queryId > LARGEST_UNSIGNED_INT) {
             throw new IllegalArgumentException("queryId must fit into an unsigned integer");
         }
         this.queryId = queryId;
 
-        if(posts.size() <= 0) {
+        // if there is at least one post, save it
+        if(posts == null || posts.size() <= 0) {
             throw new IllegalArgumentException("You must have at least 1 post");
         }
         this.posts = posts;
+    }
+
+    ////////////////////
+    // Getters/Setters
+    ////////////////////
+
+    public List<String> getPosts() {
+        return this.posts;
+    }
+
+    public void setPosts(List<String> posts) throws IllegalArgumentException {
+        // if there is not at least one post, throw an exception
+        if(posts == null || posts.size() <= 0) {
+            throw new IllegalArgumentException("You must have at least 1 post");
+        }
+        this.posts = posts;
+    }
+
+    public void setErrorCode(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public void setErrorCode(int errorCodeValue) throws IllegalArgumentException {
+        this.errorCode = ErrorCode.getErrorCode(errorCodeValue);
     }
 
     ////////////////////
@@ -75,12 +127,19 @@ public class NuDatResponse extends NuDatMessage {
 
     @Override
     public byte[] encode() throws NuDatException {
-
+        // this will build the string from the posts so that we can get the byte array
         StringBuilder sb = new StringBuilder();
+
+        // for each post
         for(String post : this.posts) {
+            // get the length of the post
             int length = post.length();
-            // TODO: this might not work
-            sb.append((short)(length & 0xFFFF));
+            
+            // write the length as an unsigned, short
+            sb.append((char)((length >> 8) & 0xFF));
+            sb.append((char)((length) & 0xFF));
+            
+            // add the actual post after this
             sb.append(post);
         }
 
@@ -100,25 +159,6 @@ public class NuDatResponse extends NuDatMessage {
         System.arraycopy(sb.toString().getBytes(), 0, result, DATA_START_INDEX, sb.length());
 
         return result;
-    }
-
-    public List<String> getPosts() {
-        return this.posts;
-    }
-
-    public void setPosts(List<String> posts) throws IllegalArgumentException {
-        if(posts.size() <= 0) {
-            throw new IllegalArgumentException("You must have at least 1 post");
-        }
-        this.posts = posts;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public void setErrorCode(int errorCodeValue) {
-        this.errorCode = ErrorCode.getErrorCode(errorCodeValue);
     }
 
     @Override

@@ -105,7 +105,8 @@ public class NuDatQueryTest {
         good[4] = 0;
         good[5] = 20;
 
-        // Requested post number good[6] = 0;
+        // Requested post number
+        good[6] = 0;
         good[7] = 10;
 
         return good;

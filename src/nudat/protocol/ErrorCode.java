@@ -9,7 +9,7 @@ public enum ErrorCode {
     PACKETTOOSHORT,
     NETWORKERROR;
 
-    public static ErrorCode getErrorCode(int errorCodeValue) {
+    public static ErrorCode getErrorCode(int errorCodeValue) throws IllegalArgumentException {
         switch(errorCodeValue) {
         case 0:
             return NOERROR;
