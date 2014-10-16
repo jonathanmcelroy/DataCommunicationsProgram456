@@ -1,7 +1,5 @@
 package nudat.protocol.test;
 
-//import static org.junit.Assert.assertEquals;
-
 import nudat.protocol.ErrorCode;
 import nudat.protocol.NuDatException;
 import nudat.protocol.NuDatMessage;
@@ -11,8 +9,6 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 
 import org.junit.Test;
 import org.junit.Assert;
-//import org.junit.runner.RunWith;
-//import org.junit.runners.JUnit4;
 
 public class NuDatMessageTest {
 

@@ -10,8 +10,19 @@ import nudat.protocol.NuDatResponse;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * NuDatResponseTest
+ *
+ * October 16, 2014
+ *
+ * @author Jonathan McElroy
+ * @version 0.2
+ */
 public class NuDatResponseTest {
 
+    /**
+     * Test the Response's Constructor with a null buffer
+     */
     @Test
     public void TestNuDatResponseConstructorNullBuffer() {
         // try to construct a response with a null array
@@ -24,6 +35,9 @@ public class NuDatResponseTest {
         }
     }
 
+    /**
+     * Test the response's Constructor with a buffer that is too short
+     */
     @Test
     public void TestNuDatResponseConstructorTooShort() {
         // try to construct a response with a short array
@@ -36,6 +50,9 @@ public class NuDatResponseTest {
         }
     }
 
+    /**
+     * Test the response's Constructor with a buffer that is too long
+     */
     @Test
     public void TestNuDatResponseConstructorTooLong() {
         // try to construct a response with a long array
@@ -51,6 +68,9 @@ public class NuDatResponseTest {
         }
     }
 
+    /**
+     * Test the response's Constructor with a null error code
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseConstuctorBadErrorCode() throws NuDatException {
         // try to construct a response with a null error code
@@ -59,6 +79,9 @@ public class NuDatResponseTest {
         new NuDatResponse(null, -1, list);
     }
 
+    /**
+     * Test the response's Constructor with a negative query id
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseConstuctorBadQueryId() throws NuDatException {
         // try to construct a response with a negative query id
@@ -67,6 +90,9 @@ public class NuDatResponseTest {
         new NuDatResponse(ErrorCode.NOERROR, -1, list);
     }
 
+    /**
+     * Test the response's Constructor with a huge query id
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseConstuctorBadQueryId2() throws NuDatException {
         // try to construct a response with a huge query id
@@ -75,6 +101,9 @@ public class NuDatResponseTest {
         new NuDatResponse(ErrorCode.NOERROR, (long)(Math.pow(2, 32) + 10), list);
     }
 
+    /**
+     * Test the response's Constructor with a null list of posts
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseConstuctorBadPosts() throws NuDatException {
         // try to construct a response with a null list
@@ -82,6 +111,9 @@ public class NuDatResponseTest {
         new NuDatResponse(ErrorCode.NOERROR, 10, list);
     }
 
+    /**
+     * Test the response's Constructor with an empty list of posts
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseConstuctorBadPosts2() throws NuDatException {
         // try to a response with an empty list
@@ -89,6 +121,9 @@ public class NuDatResponseTest {
         new NuDatResponse(ErrorCode.NOERROR, 10, list);
     }
 
+    /**
+     * Test the response's get list of posts
+     */
     @Test
     public void TestNuDatResponseGetPosts() throws NuDatException {
         // try to get the posts
@@ -99,6 +134,9 @@ public class NuDatResponseTest {
         Assert.assertEquals(response.getPosts(), list);
     }
 
+    /**
+     * Test the response's set list of posts
+     */
     @Test
     public void TestNuDatResponseSetPosts() throws NuDatException {
         // try to set the posts
@@ -109,6 +147,9 @@ public class NuDatResponseTest {
         Assert.assertEquals(response.getPosts(), list);
     }
 
+    /**
+     * Test the response's set list of posts with a null list
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseSetBadPosts() throws NuDatException {
         // try to set the posts with a null list
@@ -118,6 +159,9 @@ public class NuDatResponseTest {
         Assert.assertEquals(response.getPosts(), list);
     }
 
+    /**
+     * Test the response's set list of posts with an empty list
+     */
     @Test(expected = IllegalArgumentException.class)
     public void TestNuDatResponseSetBadPosts2() throws NuDatException {
         // try to set the posts with an empty list
@@ -125,6 +169,9 @@ public class NuDatResponseTest {
         response.setPosts(new ArrayList<String>());
     }
 
+    /**
+     * Test the response's encode
+     */
     @Test
     public void TestNuDatResponseEncode() throws NuDatException {
         // try to encode the input
@@ -135,6 +182,9 @@ public class NuDatResponseTest {
         Assert.assertArrayEquals(good, testing);
     }
 
+    /**
+     * Test the conversion to string
+     */
     @Test
     public void TestNuDatResponseToString() throws NuDatException {
         // test the string return
@@ -142,6 +192,11 @@ public class NuDatResponseTest {
         Assert.assertEquals("NuDatResponse: queryId:20, errorCode:NOERROR, posts:" + response.getPosts(), response.toString());
     }
 
+    /**
+     * Get a valid response for testing purposes
+     *
+     * @return a valid response
+     */
     private static byte[] getGoodResponse() {
         // get an average response
         
