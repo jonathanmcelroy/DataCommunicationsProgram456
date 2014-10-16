@@ -18,18 +18,48 @@ public class NuDatResponse extends NuDatMessage {
     // Members
     ////////////////////
 
+    /**
+     * The list of posts to respond with
+     */
     private List<String> posts;
 
+    /**
+     * The index of the number of posts in the buffer
+     */
     private final int POST_NUM_INDEX = 6;
+
+
+    /**
+     * The length of a buffer the requires requires in order to read the number of posts integer
+     */
     private final int POST_NUM_REQUIRED_LENGTH = 8;
+
+    /**
+     * The index of the start of the data in the buffer
+     */
     private final int DATA_START_INDEX = 8;
+
+    /**
+     * The length of a buffer the response requires in order to read the number of posts integer
+     */
     private final int RESPONSE_REQUIRED_LENGTH = 10;
+    
+    /**
+     * The largest value the query id can take
+     */
     private final long LARGEST_UNSIGNED_INT = (long)(Math.pow(2, 32) - 1);
 
     ////////////////////
     // Constructors
     ////////////////////
 
+    /**
+     * Construct a NuDatResponse by giving it the buffer to parse.
+     *
+     * @param buffer
+     *
+     * @throws NuDatException
+     */
     public NuDatResponse(byte[] buffer) throws NuDatException {
         // safety check
         if(buffer == null) {
@@ -88,6 +118,15 @@ public class NuDatResponse extends NuDatMessage {
         }
     }
 
+    /**
+     * Construct a Resonse by giving it the values to use.
+     *
+     * @param errorCode
+     * @param queryId
+     * @param posts
+     *
+     * @throws IllegalArgumentException
+     */
     public NuDatResponse(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException {
         // if the errorCode is not null, save it
         if(errorCode == null) {
@@ -112,10 +151,22 @@ public class NuDatResponse extends NuDatMessage {
     // Getters/Setters
     ////////////////////
 
+    /**
+     * Get the list of posts
+     *
+     * @return the list of posts
+     */
     public List<String> getPosts() {
         return this.posts;
     }
 
+    /**
+     * Set the list of posts
+     *
+     * @param posts
+     *
+     * @throws IllegalArgumentException
+     */
     public void setPosts(List<String> posts) throws IllegalArgumentException {
         // if there is not at least one post, throw an exception
         if(posts == null || posts.size() <= 0) {
@@ -124,10 +175,24 @@ public class NuDatResponse extends NuDatMessage {
         this.posts = posts;
     }
 
+
+    /**
+     * Set the error code
+     *
+     * @param errorCode
+     */
     public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 
+
+    /**
+     * Set the error code by its number
+     *
+     * @param errorCodeValue
+     *
+     * @throws IllegalArgumentException
+     */
     public void setErrorCode(int errorCodeValue) throws IllegalArgumentException {
         this.errorCode = ErrorCode.getErrorCode(errorCodeValue);
     }
@@ -136,6 +201,13 @@ public class NuDatResponse extends NuDatMessage {
     // Methods
     ////////////////////
 
+    /**
+     * Encode the current attributes to a byte array
+     *
+     * @return the encode instance
+     *
+     * @throws NuDatException
+     */
     @Override
     public byte[] encode() throws NuDatException {
         // this will build the string from the posts so that we can get the byte array
@@ -172,6 +244,9 @@ public class NuDatResponse extends NuDatMessage {
         return result;
     }
 
+    /**
+     * @return the string representation of the response
+     */
     @Override
     public String toString() {
         return "NuDatResponse: queryId:" + queryId + ", errorCode:" + errorCode + ", posts:" + posts;

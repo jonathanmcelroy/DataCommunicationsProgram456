@@ -65,7 +65,7 @@ public class NuDatQuery extends NuDatMessage {
     }
 
     /**
-     * Construct a Query be giving it the values to use
+     * Construct a Query by giving it the values to use
      *
      * @param queryId
      * @param requestedPosts
@@ -149,4 +149,3 @@ public class NuDatQuery extends NuDatMessage {
         return "NuDatQuery: queryId:" + queryId + ", errorCode:" + errorCode + ", requestedPosts:" + requestedPosts;
     }
 }
-
