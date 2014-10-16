@@ -1,6 +1,6 @@
-package nudat.protocol
+package nudat.protocol;
 
-public class NuDatQuery {
+public class NuDatQuery extends NuDatMessage {
     
     ////////////////////
     // Members
@@ -13,29 +13,47 @@ public class NuDatQuery {
     ////////////////////
     
     public NuDatQuery(byte[] buffer) throws NuDatException {
-        // TODO: parse buffer to create object
+        setQueryIdFromBuffer(buffer);
+        setErrorCodeFromBuffer(buffer);
+
+        if(buffer.length < 8) {
+            throw new NuDatException(ErrorCode.PACKETTOOSHORT);
+        }
+        else if(buffer.length > 8) {
+            throw new NuDatException(ErrorCode.PACKETTOOLONG);
+        }
+        this.requestedPosts = getUnsignedShort(buffer, 5);
     }
 
     public NuDatQuery(long queryId, int requestedPosts) throws IllegalArgumentException {
-        // TODO: do something with queryId
+        this.queryId = queryId;
         this.requestedPosts = requestedPosts;
     }
 
     ////////////////////
     // Methods
     ////////////////////
+
+    @Override
+    public byte[] encode() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
     public int getRequestedPosts() {
         return this.requestedPosts;
     }
 
     public void setRequestedPosts(int requestedPosts) throws IllegalArgumentException {
-        // TODO: throw IllegalArgumentException
+        if(requestedPosts <= 0) {
+            throw new IllegalArgumentException("You must request at least 1 post");
+        }
         this.requestedPosts = requestedPosts;
     }
 
-    @overrides
+    @Override
     public String toString() {
         // TODO: complete this function
+        return "NuDatQeury";
     }
 }

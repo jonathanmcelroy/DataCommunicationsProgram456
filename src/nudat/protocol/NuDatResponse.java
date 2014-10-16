@@ -1,6 +1,9 @@
-package nudat.protocol
+package nudat.protocol;
 
-public class NuDatResponse {
+import java.util.ArrayList;
+import java.util.List;
+
+public class NuDatResponse extends NuDatMessage {
     
     ////////////////////
     // Members
@@ -12,11 +15,26 @@ public class NuDatResponse {
     // Contructors
     ////////////////////
     
-    public NuDatResponce(byte[] buffer) throws NuDatException {
-        // TODO: parse buffer to create object
+    public NuDatResponse(byte[] buffer) throws NuDatException {
+        setQueryIdFromBuffer(buffer);
+        setErrorCodeFromBuffer(buffer);
+
+        if(buffer.length < 8) {
+            throw new NuDatException(ErrorCode.PACKETTOOSHORT);
+        }
+
+        int numPosts = getUnsignedShort(buffer, 5);
+        this.posts = new ArrayList<String>(numPosts);
+        for(int i=0; i < numPosts; i++) {
+
+        }
+
+        if(buffer.length > 8) {
+            throw new NuDatException(ErrorCode.PACKETTOOLONG);
+        }
     }
 
-    public NuDatQuery(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException {
+    public NuDatResponse(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException {
         // TODO: do something with queryId
         this.posts = posts;
     }
@@ -24,6 +42,12 @@ public class NuDatResponse {
     ////////////////////
     // Methods
     ////////////////////
+
+    @Override
+    public byte[] encode() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
     public List<String> getPosts() {
         return this.posts;
@@ -31,7 +55,7 @@ public class NuDatResponse {
 
     public void setPosts(List<String> posts) throws IllegalArgumentException {
         // TODO: throw IllegalArgumentException
-        this.requestedPosts = requestedPosts;
+        this.posts = posts;
     }
 
     public void setErrorCode(ErrorCode errorCode) {
@@ -42,8 +66,10 @@ public class NuDatResponse {
 
     }
 
-    @overrides
+    @Override
     public String toString() {
         // TODO: complete this function
+        return "NuDatResponse:";
     }
+
 }
