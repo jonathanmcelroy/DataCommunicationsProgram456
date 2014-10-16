@@ -6,10 +6,13 @@ public abstract class NuDatMessage {
     // Members
     ////////////////////
 
+    protected static final int VERSION = 2;
     protected static final int VERSIONQR_INDEX = 0;
     protected static final int VERSIONQR_REQUIRED_LENGTH = VERSIONQR_INDEX + 1;
     protected static final int ERRORCODE_INDEX = 1;
     protected static final int ERRORCODE_REQUIRED_LENGTH = ERRORCODE_INDEX + 1;
+    protected static final int QUERY_ID_INDEX = 2;
+    protected static final int QUERY_ID_REQUIRED_LENGTH = QUERY_ID_INDEX + 4;
 
     public static final String CHARENCODING = "ACSII";
 
@@ -42,33 +45,33 @@ public abstract class NuDatMessage {
         }
 
         // get the error code from the second byte
-        this.errorCode = ErrorCode.getErrorCode(buffer[1]);
+        this.errorCode = ErrorCode.getErrorCode(buffer[ERRORCODE_INDEX]);
     }
 
     protected void writeErrorCodeToBuffer(byte[] buffer) throws NuDatException {
-        if(buffer.length < 2) {
+        if(buffer.length < ERRORCODE_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
         }
 
-        buffer[1] = (byte)(this.errorCode.getErrorCodeValue());
+        buffer[ERRORCODE_INDEX] = (byte)(this.errorCode.getErrorCodeValue());
     }
 
     protected void setQueryIdFromBuffer(byte[] buffer) throws NuDatException {
-        if(buffer.length < 6) {
+        if(buffer.length < QUERY_ID_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
         }
 
         // get the query ID, which is a big-endian unsigned integer
-        this.queryId = readUnsignedInt(buffer, 2);
+        this.queryId = readUnsignedInt(buffer, QUERY_ID_INDEX);
     }
 
     protected void writeQueryIdToBuffer(byte[] buffer) throws NuDatException {
-        if(buffer.length < 6) {
+        if(buffer.length < QUERY_ID_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
         }
 
         // write the query ID, which is a big-endian unsigned integer
-        writeUnsignedInt(this.queryId, buffer, 2);
+        writeUnsignedInt(this.queryId, buffer, QUERY_ID_INDEX);
     }
 
     ////////////////////
@@ -77,14 +80,14 @@ public abstract class NuDatMessage {
 
     public static NuDatMessage decode(byte[] buffer) throws NuDatException {
         // get the first byte, which contains the version number and the query/response bit
-        byte versionQR = buffer[0];
+        byte versionQR = buffer[VERSIONQR_INDEX];
 
         // extract the version number and query/response bit from the first byte
         int version = (versionQR & 0b11110000) >> 4;
         int QR = (versionQR & 0b00001000) >> 3;
         int reserved = versionQR & 0b00000111;
 
-        if(version != 2) {
+        if(version != VERSION) {
             throw new NuDatException(ErrorCode.BADVERSION);
         }
         if(reserved != 0) {
@@ -134,7 +137,6 @@ public abstract class NuDatMessage {
 
     @Override
     public String toString() {
-        // TODO: complete this function
         return "NuDatMessage: queryId:" + queryId + ", ErrorCode:" + errorCode;
     }
 }

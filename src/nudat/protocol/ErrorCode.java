@@ -26,7 +26,7 @@ public enum ErrorCode {
         case 7:
             return NETWORKERROR;
         default:
-            return UNEXPECTEDERRORCODE;
+            throw new IllegalArgumentException("Unknwon error code");
         }
     }
 
@@ -54,7 +54,7 @@ public enum ErrorCode {
     public String getErrorMessage() {
         switch(this) {
         case NOERROR:
-            return "";
+            return "No error";
         case BADVERSION:
             return "Bad version";
         case UNEXPECTEDERRORCODE:
@@ -68,8 +68,9 @@ public enum ErrorCode {
         case NETWORKERROR:
             return "Network error";
         default:
-            return "";
+            return "Unknown error";
         }
     }
 
 }
+
