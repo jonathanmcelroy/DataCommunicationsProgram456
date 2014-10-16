@@ -1,14 +1,57 @@
 package nudat.protocol;
 
+/**
+ * ErrorCode
+ *
+ * October 16, 2014
+ *
+ * @author Jonathan McElroy
+ * @version 0.2
+ */
 public enum ErrorCode {
+    /**
+     * Indicates no error
+     */
     NOERROR,
+
+    /**
+     * Indicates a message with a bad version was received
+     */
     BADVERSION,
+
+    /**
+     * Indicates a message with an unexpected error code was received
+     */
     UNEXPECTEDERRORCODE,
+
+    /**
+     * Indicates a message with an unexpected packet type was received
+     */
     UNEXPECTEDPACKETTYPE,
+
+    /**
+     * Indicates a message with extraneous trailing bytes was received
+     */
     PACKETTOOLONG,
+
+    /**
+     * Indicates a message with insufficient bytes was received
+     */
     PACKETTOOSHORT,
+
+    /**
+     * Indicates some network error occurred
+     */
     NETWORKERROR;
 
+    /**
+     * Create an error code by giving its error value
+     *
+     * @param errorCodeValue
+     * @return the error code
+     *
+     * @throws IllegalArgumentException
+     */
     public static ErrorCode getErrorCode(int errorCodeValue) throws IllegalArgumentException {
         switch(errorCodeValue) {
         case 0:
@@ -30,6 +73,11 @@ public enum ErrorCode {
         }
     }
 
+    /**
+     * Get the value cresponding to the ErrorCode
+     *
+     * @return the value of the error code
+     */
     public int getErrorCodeValue() {
         switch(this) {
         case NOERROR:
@@ -51,6 +99,11 @@ public enum ErrorCode {
         }
     }
 
+    /**
+     * Get the error message corresponding tot he ErrorCode
+     *
+     * @return the error message
+     */
     public String getErrorMessage() {
         switch(this) {
         case NOERROR:
@@ -73,4 +126,3 @@ public enum ErrorCode {
     }
 
 }
-
