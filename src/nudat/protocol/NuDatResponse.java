@@ -18,14 +18,13 @@ public class NuDatResponse extends NuDatMessage {
     // Members
     ////////////////////
 
+    private List<String> posts;
+
     private final int POST_NUM_INDEX = 6;
     private final int POST_NUM_REQUIRED_LENGTH = 8;
     private final int DATA_START_INDEX = 8;
     private final int RESPONSE_REQUIRED_LENGTH = 10;
-
     private final long LARGEST_UNSIGNED_INT = (long)(Math.pow(2, 32) - 1);
-
-    private List<String> posts;
 
     ////////////////////
     // Constructors
