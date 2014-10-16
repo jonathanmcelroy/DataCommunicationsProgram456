@@ -1,8 +1,17 @@
 package nudat.protocol;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * NuDatResponse
+ *
+ * October 16, 2014
+ *
+ * @author Jonathan McElroy
+ * @version 0.2
+ */
 public class NuDatResponse extends NuDatMessage {
 
     ////////////////////
@@ -19,7 +28,7 @@ public class NuDatResponse extends NuDatMessage {
     private List<String> posts;
 
     ////////////////////
-    // Contructors
+    // Constructors
     ////////////////////
 
     public NuDatResponse(byte[] buffer) throws NuDatException {
@@ -38,7 +47,7 @@ public class NuDatResponse extends NuDatMessage {
         }
 
         // get the number of posts on the buffer
-        int numPosts = getUnsignedShort(buffer, POST_NUM_INDEX);
+        int numPosts = readUnsignedShort(buffer, POST_NUM_INDEX);
 
         // initialize the lists of posts
         this.posts = new ArrayList<String>(numPosts);
@@ -54,7 +63,7 @@ public class NuDatResponse extends NuDatMessage {
             }
 
             // get the length of the post
-            int postLength = getUnsignedShort(buffer, index);
+            int postLength = readUnsignedShort(buffer, index);
 
             // if the buffer is not long enough to read the post, raise an exception
             if(index + 2 + postLength > buffer.length) {
@@ -62,7 +71,10 @@ public class NuDatResponse extends NuDatMessage {
             }
 
             // get post string
-            String post = new String(buffer, index + 2, postLength);
+            String post = null;
+            try {
+                post = new String(buffer, index + 2, postLength, CHARENCODING);
+            } catch (UnsupportedEncodingException e) {}
 
             // add the post to the list of posts
             this.posts.add(post);
@@ -167,7 +179,3 @@ public class NuDatResponse extends NuDatMessage {
     }
 
 }
-
-
-
-

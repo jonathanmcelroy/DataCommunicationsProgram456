@@ -1,44 +1,107 @@
 package nudat.protocol;
 
+/**
+ * NuDatMessage
+ *
+ * October 16, 2014
+ *
+ * @author Jonathan McElroy
+ * @version 0.2
+ */
 public abstract class NuDatMessage {
 
     ////////////////////
     // Members
     ////////////////////
 
-    protected static final int VERSION = 2;
-    protected static final int VERSIONQR_INDEX = 0;
-    protected static final int VERSIONQR_REQUIRED_LENGTH = VERSIONQR_INDEX + 1;
-    protected static final int ERRORCODE_INDEX = 1;
-    protected static final int ERRORCODE_REQUIRED_LENGTH = ERRORCODE_INDEX + 1;
-    protected static final int QUERY_ID_INDEX = 2;
-    protected static final int QUERY_ID_REQUIRED_LENGTH = QUERY_ID_INDEX + 4;
+    /**
+     * Character encoding for NuDat messages
+     */
+    public static final String CHARENCODING = "ASCII";
 
-    public static final String CHARENCODING = "ACSII";
 
+    /**
+     * The query each message is referring to
+     */
     protected long queryId;
+
+    /**
+     * The error code associated with the message
+     */
     protected ErrorCode errorCode = ErrorCode.NOERROR;
 
+
+    /**
+     * The current NuDat version numbers
+     */
+    protected static final int VERSION = 2;
+    /**
+     * The index of the VersionQR byte
+     */
+    protected static final int VERSIONQR_INDEX = 0;
+    /**
+     * The length of a buffer the message requires in order to read the VersionQR byte
+     */
+    protected static final int VERSIONQR_REQUIRED_LENGTH = VERSIONQR_INDEX + 1;
+    /**
+     *  The index of the ErrorCode byte
+     */
+    protected static final int ERRORCODE_INDEX = 1;
+    /**
+     * The length of a buffer the message requires in order to read the ErrorCode byte
+     */
+    protected static final int ERRORCODE_REQUIRED_LENGTH = ERRORCODE_INDEX + 1;
+    /**
+     *  The index of the Query Id bytes
+     */
+    protected static final int QUERY_ID_INDEX = 2;
+    /**
+     * The length of a buffer the message requires in order to read the Query ID bytes
+     */
+    protected static final int QUERY_ID_REQUIRED_LENGTH = QUERY_ID_INDEX + 4;
+
     ////////////////////
-    // Contructors
+    // Constructors
     ////////////////////
 
     ////////////////////
     // Getters/Setters
     ////////////////////
 
+    /**
+     * Get the ErrorCode associated with this message
+     *
+     * @return the error code
+     */
     public ErrorCode getErrorCode() {
         return errorCode;
     }
 
+    /**
+     * Get the Query ID associated with this message
+     *
+     * @return the queryId
+     */
     public long getQueryId() {
         return queryId;
     }
 
+    /**
+     * Set the Query Id to the input
+     *
+     * @param queryId
+     */
     public void setQueryId(long queryId) {
         this.queryId = queryId;
     }
 
+    /**
+     * Set the error code by parsing the buffer
+     *
+     * @param buffer
+     *
+     * @throws NuDatException
+     */
     protected void setErrorCodeFromBuffer(byte[] buffer) throws NuDatException {
         if(buffer.length < ERRORCODE_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
@@ -48,6 +111,13 @@ public abstract class NuDatMessage {
         this.errorCode = ErrorCode.getErrorCode(buffer[ERRORCODE_INDEX]);
     }
 
+    /**
+     * Write the current error code to the buffer
+     *
+     * @param buffer
+     *
+     * @throws NuDatException
+     */
     protected void writeErrorCodeToBuffer(byte[] buffer) throws NuDatException {
         if(buffer.length < ERRORCODE_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
@@ -56,6 +126,13 @@ public abstract class NuDatMessage {
         buffer[ERRORCODE_INDEX] = (byte)(this.errorCode.getErrorCodeValue());
     }
 
+    /**
+     * Set the Query ID by parsing the buffer
+     *
+     * @param buffer
+     *
+     * @throws NuDatException
+     */
     protected void setQueryIdFromBuffer(byte[] buffer) throws NuDatException {
         if(buffer.length < QUERY_ID_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
@@ -65,6 +142,13 @@ public abstract class NuDatMessage {
         this.queryId = readUnsignedInt(buffer, QUERY_ID_INDEX);
     }
 
+    /**
+     * Write the current query ID to the buffer
+     *
+     * @param buffer
+     *
+     * @throws NuDatException
+     */
     protected void writeQueryIdToBuffer(byte[] buffer) throws NuDatException {
         if(buffer.length < QUERY_ID_REQUIRED_LENGTH) {
             throw new NuDatException(ErrorCode.PACKETTOOSHORT);
@@ -78,6 +162,15 @@ public abstract class NuDatMessage {
     // Other Methods
     ////////////////////
 
+    /**
+     * Decode the input and produce a NuDatMessage. This will either be a Query
+     * or Response
+     *
+     * @param buffer
+     * @return the parsed NuDatMessage
+     *
+     * @throws NuDatException
+     */
     public static NuDatMessage decode(byte[] buffer) throws NuDatException {
         // get the first byte, which contains the version number and the query/response bit
         byte versionQR = buffer[VERSIONQR_INDEX];
@@ -109,8 +202,22 @@ public abstract class NuDatMessage {
         }
     }
 
+    /**
+     * Encode the current attributes to a byte array
+     *
+     * @return the encode instance
+     *
+     * @throws NuDatException
+     */
     public abstract byte[] encode() throws NuDatException;
 
+    /**
+     * Read an unsigned four-byte integer from the buffer at the given offset
+     *
+     * @param buffer
+     * @param offset
+     * @return the result of the parse
+     */
     protected final static long readUnsignedInt(byte[] buffer, int offset) {
         return ((buffer[offset]      & 0xFF) << 24) |
                ((buffer[offset + 1]  & 0xFF) << 16) |
@@ -118,6 +225,13 @@ public abstract class NuDatMessage {
                ((buffer[offset + 3]  & 0xFF));
     }
 
+    /**
+     * Write the value into the buffer as an unsigned four-byte integer.
+     *
+     * @param value
+     * @param buffer
+     * @param offset
+     */
     protected final static void writeUnsignedInt(long value, byte[] buffer, int offset) {
         buffer[offset]     = (byte)((value >> 24) & 0xFF);
         buffer[offset + 1] = (byte)((value >> 16) & 0xFF);
@@ -125,25 +239,35 @@ public abstract class NuDatMessage {
         buffer[offset + 3] = (byte)(value         & 0xFF);
     }
 
-    protected final static int getUnsignedShort(byte[] buffer, int offset) {
+    /**
+     * Read an unsigned two-byte integer from the buffer at the given offset
+     *
+     * @param buffer
+     * @param offset
+     * @return the result of the parse
+     */
+    protected final static int readUnsignedShort(byte[] buffer, int offset) {
         return ((buffer[offset]      & 0xFF) << 8) |
                ((buffer[offset + 1]  & 0xFF));
     }
 
+    /**
+     * Write the value into the buffer as an unsigned two-byte integer.
+     *
+     * @param value
+     * @param buffer
+     * @param offset
+     */
     protected final static void writeUnsignedShort(int value, byte[] buffer, int offset) {
         buffer[offset]     = (byte)((value >> 8) & 0xFF);
         buffer[offset + 1] = (byte)(value        & 0xFF);
     }
 
+    /**
+     * @return the string representation of the message
+     */
     @Override
     public String toString() {
         return "NuDatMessage: queryId:" + queryId + ", ErrorCode:" + errorCode;
     }
 }
-
-
-
-
-
-
-

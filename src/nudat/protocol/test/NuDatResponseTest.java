@@ -184,4 +184,3 @@ public class NuDatResponseTest {
         return good;
     }
 }
-
