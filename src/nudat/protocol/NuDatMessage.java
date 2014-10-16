@@ -80,11 +80,11 @@ public abstract class NuDatMessage {
         byte versionQR = buffer[0];
 
         // extract the version number and query/response bit from the first byte
-        int version = versionQR & 0b11110000;
-        int QR = versionQR & 0b00001000;
-        int reserved = version & 0b00000111;
+        int version = (versionQR & 0b11110000) >> 4;
+        int QR = (versionQR & 0b00001000) >> 3;
+        int reserved = versionQR & 0b00000111;
 
-        if(version != 1) {
+        if(version != 2) {
             throw new NuDatException(ErrorCode.BADVERSION);
         }
         if(reserved != 0) {

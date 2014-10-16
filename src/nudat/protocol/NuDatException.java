@@ -12,13 +12,22 @@ public class NuDatException extends Exception {
     ////////////////////
     // Contructors
     ////////////////////
-    
-    public NuDatException(ErrorCode errorCode){ 
 
+    public NuDatException(ErrorCode errorCode){
+        super(errorCode.getErrorMessage());
+        this.errorCode = errorCode;
+    }
+
+    public NuDatException(ErrorCode errorCode, Throwable cause) {
+        super(cause);
+        this.errorCode = errorCode;
     }
 
     ////////////////////
     // Methods
     ////////////////////
 
+    public ErrorCode getErrorCode() {
+        return this.errorCode;
+    }
 }
