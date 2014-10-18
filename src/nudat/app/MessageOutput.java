@@ -1,4 +1,4 @@
-package yosnap.protocol;
+package nudat.app;
 
 import java.io.IOException;
 import java.io.OutputStream;

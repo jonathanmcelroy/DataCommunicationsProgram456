@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
 org.eclim.java.import.exclude=["^com.sun..*","^sunw?..*"]
+org.eclim.java.run.mainclass=nudat.app.NuDatClient
 org.eclim.user.name=Jonathan McElroy

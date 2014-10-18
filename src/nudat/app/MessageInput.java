@@ -1,13 +1,13 @@
-package yosnap.protocol;
+package nudat.app;
 
 import java.io.InputStream;
 import java.io.IOException;
 
 /**
  * Program 1
- * 
+ *
  * @author Jonathan McElroy
- * 
+ *
  */
 public class MessageInput {
 
@@ -37,8 +37,8 @@ public class MessageInput {
 
         this.io.mark(2);
         int ch = this.io.read();
-        while ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'z' || 'A' <= ch
-                && ch <= 'Z') {
+        while('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'z' || 'A' <= ch
+        && ch <= 'Z') {
             this.io.mark(2);
             sb.append((char) ch);
             ch = this.io.read();
@@ -57,8 +57,8 @@ public class MessageInput {
 
         this.io.mark(2);
         int ch = this.io.read();
-        while ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'z' || 'A' <= ch
-                && ch <= 'Z' || ch == '+' || ch == '/') {
+        while('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'z' || 'A' <= ch
+        && ch <= 'Z' || ch == '+' || ch == '/') {
             this.io.mark(2);
             sb.append((char) ch);
             ch = this.io.read();
@@ -68,12 +68,12 @@ public class MessageInput {
         return sb.toString().getBytes();
     }
 
-    public float readFloat() throws IOException, YoSnapException {
-        try {
-            return Float.parseFloat(this.readWord());
-        } catch (NumberFormatException exception) {
-            throw new YoSnapException("Not a floating point number", exception);
-        }
+    public float readFloat() throws IOException {
+        return Float.parseFloat(this.readWord());
+        //try {
+        //} catch (NumberFormatException exception) {
+        //throw new YoSnapException("Not a floating point number", exception);
+        //}
     }
 
     /**
@@ -81,16 +81,16 @@ public class MessageInput {
      * @throws IOException
      * @throws YoSnapException
      */
-    public String readHash() throws IOException, YoSnapException {
+    public String readHash() throws IOException{
         StringBuilder sb = new StringBuilder();
 
         this.io.mark(3);
         int ch1 = this.io.read();
         int ch2 = this.io.read();
-        while ('0' <= ch1 && ch1 <= '9' || 'A' <= ch1 && ch1 <= 'Z') {
-            if (!('0' <= ch1 && ch1 <= '9' || 'A' <= ch1 && ch1 <= 'Z')) {
-                throw new YoSnapException("Not an MD5 Hash");
-            }
+        while('0' <= ch1 && ch1 <= '9' || 'A' <= ch1 && ch1 <= 'Z') {
+            //if(!('0' <= ch1 && ch1 <= '9' || 'A' <= ch1 && ch1 <= 'Z')) {
+                //throw new YoSnapException("Not an MD5 Hash");
+            //}
             this.io.mark(3);
             sb.append((char) ch1);
             sb.append((char) ch2);
@@ -111,7 +111,7 @@ public class MessageInput {
 
         this.io.mark(2);
         int ch = this.io.read();
-        while (ch != '\r') {
+        while(ch != '\r') {
             this.io.mark(2);
             sb.append((char) ch);
             ch = this.io.read();
@@ -126,12 +126,12 @@ public class MessageInput {
      * @throws IOException
      * @throws YoSnapException
      */
-    public String readNewLine() throws IOException, YoSnapException {
-        int chr = this.io.read();
-        int chn = this.io.read();
-        if (chr != '\r' || chn != '\n') {
-            throw new YoSnapException("Not the end of the message");
-        }
+    public String readNewLine() throws IOException {
+        //int chr = this.io.read();
+        //int chn = this.io.read();
+        //if(chr != '\r' || chn != '\n') {
+            //throw new YoSnapException("Not the end of the message");
+        //}
         return "\r\n";
     }
 
@@ -144,7 +144,7 @@ public class MessageInput {
 
         this.io.mark(2);
         int ch = this.io.read();
-        while ('0' <= ch && ch <= '9') {
+        while('0' <= ch && ch <= '9') {
             this.io.mark(2);
             sb.append((char) ch);
             ch = this.io.read();
@@ -159,12 +159,12 @@ public class MessageInput {
      * @throws IOException
      * @throws YoSnapException
      */
-    public char readSpace() throws IOException, YoSnapException {
+    public char readSpace() throws IOException {
         this.io.mark(2);
         int ch = this.io.read();
-        if (ch != ' ') {
+        if(ch != ' ') {
             this.io.reset();
-            throw new YoSnapException("Not a space");
+            //throw new YoSnapException("Not a space");
         }
         return ' ';
     }
@@ -178,7 +178,7 @@ public class MessageInput {
 
         this.io.mark(2);
         int ch = this.io.read();
-        while (!Character.isWhitespace(ch)) {
+        while(!Character.isWhitespace(ch)) {
             this.io.mark(2);
             sb.append((char) ch);
             ch = this.io.read();
@@ -200,3 +200,4 @@ public class MessageInput {
     }
 
 }
+
