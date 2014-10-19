@@ -26,12 +26,11 @@ public class NuDatClient {
             MessageOutput out = new MessageOutput(serverSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
 
-            System.out.println("first");
+            System.out.println(recieveResponse(in));
             sendQuery(query, out);
             System.out.println("Here");
             recieveResponse(in);
             System.out.println("New Here");
-            //System.out.println(in.readLine());
 
             //in.read(byte[] arg0);
         }
@@ -52,8 +51,8 @@ public class NuDatClient {
 
     }
 
-    private static void recieveResponse(BufferedReader in) {
+    private static String recieveResponse(BufferedReader in) throws IOException {
         // TODO Auto-generated method stub
-
+        return in.readLine();
     }
 }
