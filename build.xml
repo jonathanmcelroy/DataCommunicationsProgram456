@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="run" name="DComProgram456">
+
+    <target name="run" depends="compile">
+        <java classname="nudat.app.NuDatClient">
+            <classpath path="bin" />
+            <arg line="${args}" />
+        </java>
+    </target>
+
+    <target name="compile">
+        <javac srcdir="./src" destdir="bin" />
+    </target>
+
+    <target name="classpath">
+        <echo message="src" />
+    </target>
+
+</project>
