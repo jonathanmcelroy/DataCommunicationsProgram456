@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Posible error codes for the NuDat protocol
+ * Possible error codes for the NuDat protocol
  *
  * @version 0.2
  * @author Jonathan McElroy
@@ -67,6 +67,11 @@ public enum ErrorCode {
 
     /**
      * Create an error code given its value and message
+     * 
+     * @param errorCodeValue
+     *      the value of the error code to create
+     * @param errorMessage
+     *      the message within the error code to create
      */
     private ErrorCode(int errorCodeValue, String errorMessage) {
         this.errorCodeValue = errorCodeValue;
@@ -77,6 +82,7 @@ public enum ErrorCode {
      * Create an error code by giving its error value
      *
      * @param errorCodeValue
+     *      the value of the error code to find
      * @return the error code
      *
      * @throws IllegalArgumentException

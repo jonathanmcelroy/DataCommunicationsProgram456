@@ -8,9 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * NuDatQueryTest
- *
- * October 16, 2014
+ * Test the NuDat query class
  *
  * @author Jonathan McElroy
  * @version 0.2

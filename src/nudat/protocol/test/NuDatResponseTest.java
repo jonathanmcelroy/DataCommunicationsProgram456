@@ -11,9 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * NuDatResponseTest
- *
- * October 16, 2014
+ * Test the NuDatResponse class
  *
  * @author Jonathan McElroy
  * @version 0.2
@@ -201,8 +199,8 @@ public class NuDatResponseTest {
         // get an average response
         
         byte[] good = new byte[20];
-        // Version = 0010, RQ = 0, Reserved = 0
-        good[0] = 0b00100000;
+        // Version = 0010, RQ = 1, Reserved = 0
+        good[0] = 0b00101000;
 
         // ErrorCode = 0;
         good[1] = 0;

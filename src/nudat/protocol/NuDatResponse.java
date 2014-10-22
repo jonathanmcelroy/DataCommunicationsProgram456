@@ -62,6 +62,12 @@ public class NuDatResponse extends NuDatMessage {
 
     /**
      * Construct a NuDatResponse by giving it the buffer to parse.
+     *
+     * @param buffer
+     *      the buffer to build our NuDatResponse from
+     *
+     * @throws NuDatException
+     *      when the buffer is not properly formatted
      */
     public NuDatResponse(byte[] buffer) throws NuDatException {
         // safety check
@@ -123,7 +129,17 @@ public class NuDatResponse extends NuDatMessage {
     }
 
     /**
-     * Construct a Resonse by giving it the values to use.
+     * Construct a Response by giving it the values to use.
+     *
+     * @param errorCode
+     *      the error code to remember
+     * @param queryId
+     *      the query id to remember
+     * @param posts
+     *      the list of posts to remember
+     *
+     * @throws IllegalArumentException
+     *      when we input an invalid thing to remember
      */
     public NuDatResponse(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException {
         setErrorCode(errorCode);
@@ -148,13 +164,15 @@ public class NuDatResponse extends NuDatMessage {
      * Set the list of posts
      *
      * @param posts
+     *      is the list of posts to remember
      *
      * @throws IllegalArgumentException
+     *      when given a null list of posts
      */
     public void setPosts(List<String> posts) throws IllegalArgumentException {
-        // if there is not at least one post, throw an exception
-        if(posts == null || posts.size() <= 0) {
-            throw new IllegalArgumentException("You must have at least 1 post");
+        // if the posts is null, throw an exception
+        if(posts == null) {
+            throw new IllegalArgumentException("Null list of posts given");
         }
         this.posts = posts;
     }
@@ -163,6 +181,7 @@ public class NuDatResponse extends NuDatMessage {
      * Set the error code
      *
      * @param errorCode
+     *      is the error code to remember
      */
     public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
@@ -172,8 +191,10 @@ public class NuDatResponse extends NuDatMessage {
      * Set the error code by its number
      *
      * @param errorCodeValue
+     *      is the value of the error code that we want to remember
      *
      * @throws IllegalArgumentException
+     *      if the error code value does not correspond to and error code
      */
     public void setErrorCode(int errorCodeValue) throws IllegalArgumentException {
         this.errorCode = ErrorCode.getErrorCode(errorCodeValue);
@@ -189,6 +210,7 @@ public class NuDatResponse extends NuDatMessage {
      * @return the encode instance
      *
      * @throws NuDatException
+     *      when we have an invalidly set option
      */
     @Override
     public byte[] encode() throws NuDatException {

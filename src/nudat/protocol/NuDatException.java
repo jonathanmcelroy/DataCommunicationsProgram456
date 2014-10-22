@@ -27,6 +27,9 @@ public class NuDatException extends Exception {
 
     /**
      * Create the exception from an ErrorCode
+     * 
+     * @param errorCode
+     *      the error code to associate with the exception
      */
     public NuDatException(ErrorCode errorCode){
         super(errorCode.getErrorMessage());
@@ -35,6 +38,11 @@ public class NuDatException extends Exception {
 
     /**
      * Create an exception from an ErrorCode and a cause
+     * 
+     * @param errorCode
+     *      the error code to associate with the ecxeption
+     * @param cause
+     *      the cause of the exception
      */
     public NuDatException(ErrorCode errorCode, Throwable cause) {
         super(errorCode.getErrorMessage(), cause);

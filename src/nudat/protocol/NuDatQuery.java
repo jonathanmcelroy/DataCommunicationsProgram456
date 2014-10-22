@@ -45,6 +45,9 @@ public class NuDatQuery extends NuDatMessage {
 
     /**
      * Construct a NuDatQuery by giving it the buffer to parse.
+     *
+     * @param buffer
+     *      the buffer to build our NuDatQuery from
      */
     public NuDatQuery(byte[] buffer) throws NuDatException {
         if(buffer == null) {
@@ -67,7 +70,9 @@ public class NuDatQuery extends NuDatMessage {
      * Construct a Query by giving it the values to use
      *
      * @param queryId
+     *      the query id to remember
      * @param requestedPosts
+     *      the number of posts we are requesting
      *
      * @throws IllegalArgumentException
      */
@@ -93,6 +98,7 @@ public class NuDatQuery extends NuDatMessage {
      * Set the number of requested posts
      *
      * @param requestedPosts
+     *      the number to set the requested posts to
      */
     public void setRequestedPosts(int requestedPosts) throws IllegalArgumentException {
         if(requestedPosts <= 0) {
@@ -109,7 +115,7 @@ public class NuDatQuery extends NuDatMessage {
     /**
      * Encode the current attributes to a byte array
      *
-     * @return the encode instance
+     * @return the encoded query
      */
     @Override
     public byte[] encode() throws NuDatException {

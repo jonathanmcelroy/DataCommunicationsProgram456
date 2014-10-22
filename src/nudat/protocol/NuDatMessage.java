@@ -65,7 +65,27 @@ public abstract class NuDatMessage {
     /**
      * The largest value the query id can take
      */
-    protected final long LARGEST_UNSIGNED_INT = (long)(Math.pow(2, 32) - 1);
+    protected static final long LARGEST_UNSIGNED_INT = (long)(Math.pow(2, 32) - 1);
+
+    /**
+     * Mask to get the version from the first byte of the message
+     */
+    private static final int VERSION_MASK = 0b11110000;
+
+    /**
+     * Amount of bits to shift to get the version number
+     */
+    private static final int VERSION_SHIFT = 4;
+
+    /**
+     * Mask to get the QR flag from the first byte of the message
+     */
+    private static final int QR_MASK = 0b00001000;
+
+    /**
+     * Abount of bits to shift to get the QR flag
+     */
+    private static final int QR_SHIFT = 3;
 
     ////////////////////
     // Constructors
@@ -177,8 +197,8 @@ public abstract class NuDatMessage {
         byte versionQR = buffer[VERSIONQR_INDEX];
 
         // extract the version number and query/response bit from the first byte
-        int version = (versionQR & 0b11110000) >> 4;
-        int QR = (versionQR & 0b00001000) >> 3;
+        int version = (versionQR & VERSION_MASK) >> VERSION_SHIFT;
+        int QR = (versionQR & QR_MASK) >> QR_SHIFT;
         int reserved = versionQR & 0b00000111;
 
         if(version != VERSION) {
