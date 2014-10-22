@@ -1,12 +1,10 @@
 package nudat.protocol;
 
 /**
- * NuDatQuery
+ * A NuDat query to send to a NuDat server
  *
- * October 16, 2014
- *
+ * @version 0.2
  * @author Jonathan McElroy
- * @version 0,2
  */
 public class NuDatQuery extends NuDatMessage {
 
@@ -35,6 +33,11 @@ public class NuDatQuery extends NuDatMessage {
      */
     private final int REQUESTED_POSTS_REQUIRED_LENGTH = QUERY_LENGTH;
 
+    /**
+     * The value of the first byte in the query 
+     */
+    private final byte QUERY_VERSIONQR = 0b00100000;
+
 
     ////////////////////
     // Contructors
@@ -42,10 +45,6 @@ public class NuDatQuery extends NuDatMessage {
 
     /**
      * Construct a NuDatQuery by giving it the buffer to parse.
-     *
-     * @param buffer
-     *
-     * @throws NuDatException
      */
     public NuDatQuery(byte[] buffer) throws NuDatException {
         if(buffer == null) {
@@ -73,15 +72,13 @@ public class NuDatQuery extends NuDatMessage {
      * @throws IllegalArgumentException
      */
     public NuDatQuery(long queryId, int requestedPosts) throws IllegalArgumentException {
-        if(queryId < 0 || queryId > Math.pow(2, 32) - 1){
+
+        if(queryId < 0 || queryId > LARGEST_UNSIGNED_INT){
             throw new IllegalArgumentException("queryId must fit into an unsigned integer");
         }
         this.queryId = queryId;
 
-        if(requestedPosts <= 0) {
-            throw new IllegalArgumentException("You must request at least 1 post");
-        }
-        this.requestedPosts = requestedPosts;
+        setRequestedPosts(requestedPosts);
     }
 
     ////////////////////
@@ -101,8 +98,6 @@ public class NuDatQuery extends NuDatMessage {
      * Set the number of requested posts
      *
      * @param requestedPosts
-     *
-     * @throws IllegalArgumentException
      */
     public void setRequestedPosts(int requestedPosts) throws IllegalArgumentException {
         if(requestedPosts <= 0) {
@@ -120,8 +115,6 @@ public class NuDatQuery extends NuDatMessage {
      * Encode the current attributes to a byte array
      *
      * @return the encode instance
-     *
-     * @throws NuDatException
      */
     @Override
     public byte[] encode() throws NuDatException {
@@ -129,7 +122,7 @@ public class NuDatQuery extends NuDatMessage {
         byte[] result = new byte[QUERY_LENGTH];
 
         // set the version number and QR flag
-        result[0] = 0b00100000;
+        result[0] = QUERY_VERSIONQR;
 
         // write the error code and query id to the buffer
         writeErrorCodeToBuffer(result);
