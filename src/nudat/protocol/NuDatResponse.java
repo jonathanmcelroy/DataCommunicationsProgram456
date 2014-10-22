@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * NuDatResponse
+ * A NuDat responce to send to a NuDat client
  *
- * October 16, 2014
- *
- * @author Jonathan McElroy
  * @version 0.2
+ * @author Jonathan McElroy
  */
 public class NuDatResponse extends NuDatMessage {
 
@@ -43,11 +41,22 @@ public class NuDatResponse extends NuDatMessage {
      * The length of a buffer the response requires in order to read the number of posts integer
      */
     private final int RESPONSE_REQUIRED_LENGTH = 10;
-    
+
     /**
-     * The largest value the query id can take
+     * The value of the first byte in the response
      */
-    private final long LARGEST_UNSIGNED_INT = (long)(Math.pow(2, 32) - 1);
+    private final byte RESPONSE_VERSIONQR = 0b00101000;
+
+    /**
+     * Value for a shift to shift by one byte
+     */
+    private final int BYTE_SHIFT = 8;
+
+    /**
+     * Mask to get the last byte
+     */
+    private final int BYTE_MASK = 0xFF;
+
 
     ////////////////////
     // Constructors
@@ -55,10 +64,6 @@ public class NuDatResponse extends NuDatMessage {
 
     /**
      * Construct a NuDatResponse by giving it the buffer to parse.
-     *
-     * @param buffer
-     *
-     * @throws NuDatException
      */
     public NuDatResponse(byte[] buffer) throws NuDatException {
         // safety check
@@ -103,7 +108,8 @@ public class NuDatResponse extends NuDatMessage {
             String post = null;
             try {
                 post = new String(buffer, index + 2, postLength, CHARENCODING);
-            } catch (UnsupportedEncodingException e) {}
+            }
+            catch(UnsupportedEncodingException e) {}
 
             // add the post to the list of posts
             this.posts.add(post);
@@ -120,31 +126,11 @@ public class NuDatResponse extends NuDatMessage {
 
     /**
      * Construct a Resonse by giving it the values to use.
-     *
-     * @param errorCode
-     * @param queryId
-     * @param posts
-     *
-     * @throws IllegalArgumentException
      */
     public NuDatResponse(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException {
-        // if the errorCode is not null, save it
-        if(errorCode == null) {
-            throw new IllegalArgumentException("ErrorCode must not be null");
-        }
-        this.errorCode = errorCode;
-
-        // if the query fits in an unsigned, two-byte integer, save it
-        if(queryId < 0 || queryId > LARGEST_UNSIGNED_INT) {
-            throw new IllegalArgumentException("queryId must fit into an unsigned integer");
-        }
-        this.queryId = queryId;
-
-        // if there is at least one post, save it
-        if(posts == null || posts.size() <= 0) {
-            throw new IllegalArgumentException("You must have at least 1 post");
-        }
-        this.posts = posts;
+        setErrorCode(errorCode);
+        setQueryId(queryId);
+        setPosts(posts);
     }
 
     ////////////////////
@@ -217,11 +203,11 @@ public class NuDatResponse extends NuDatMessage {
         for(String post : this.posts) {
             // get the length of the post
             int length = post.length();
-            
+
             // write the length as an unsigned, short
-            sb.append((char)((length >> 8) & 0xFF));
-            sb.append((char)((length) & 0xFF));
-            
+            sb.append((char)((length >> BYTE_SHIFT) & BYTE_MASK));
+            sb.append((char)((length) & BYTE_MASK));
+
             // add the actual post after this
             sb.append(post);
         }
@@ -230,7 +216,7 @@ public class NuDatResponse extends NuDatMessage {
         byte[] result = new byte[POST_NUM_REQUIRED_LENGTH + sb.length()];
 
         // set the version number and QR flag
-        result[0] = 0b00100000;
+        result[0] = RESPONSE_VERSIONQR;
 
         // write the error code and query id to the buffer
         writeErrorCodeToBuffer(result);
@@ -253,3 +239,4 @@ public class NuDatResponse extends NuDatMessage {
     }
 
 }
+
