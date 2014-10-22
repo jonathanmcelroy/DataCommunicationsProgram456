@@ -72,12 +72,7 @@ public class NuDatQuery extends NuDatMessage {
      * @throws IllegalArgumentException
      */
     public NuDatQuery(long queryId, int requestedPosts) throws IllegalArgumentException {
-
-        if(queryId < 0 || queryId > LARGEST_UNSIGNED_INT){
-            throw new IllegalArgumentException("queryId must fit into an unsigned integer");
-        }
-        this.queryId = queryId;
-
+        setQueryId(queryId);
         setRequestedPosts(requestedPosts);
     }
 
