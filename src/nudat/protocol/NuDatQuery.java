@@ -101,8 +101,8 @@ public class NuDatQuery extends NuDatMessage {
      *      the number to set the requested posts to
      */
     public void setRequestedPosts(int requestedPosts) throws IllegalArgumentException {
-        if(requestedPosts <= 0) {
-            throw new IllegalArgumentException("You must request at least 1 post");
+        if(requestedPosts < 0) {
+            throw new IllegalArgumentException("You must request at least 0 posts");
         }
 
         this.requestedPosts = requestedPosts;
