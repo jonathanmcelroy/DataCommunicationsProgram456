@@ -1,12 +1,10 @@
 package nudat.protocol;
 
 /**
- * NuDatException
+ * Exception class for the NuDat protocol
  *
- * October 16, 2014
- *
- * @author Jonathan McElroy
  * @version 0.2
+ * @author Jonathan McElroy
  */
 public class NuDatException extends Exception {
     ////////////////////
@@ -29,8 +27,6 @@ public class NuDatException extends Exception {
 
     /**
      * Create the exception from an ErrorCode
-     *
-     * @param errorCode
      */
     public NuDatException(ErrorCode errorCode){
         super(errorCode.getErrorMessage());
@@ -39,12 +35,9 @@ public class NuDatException extends Exception {
 
     /**
      * Create an exception from an ErrorCode and a cause
-     *
-     * @param errorCode
-     * @param cause
      */
     public NuDatException(ErrorCode errorCode, Throwable cause) {
-        super(cause);
+        super(errorCode.getErrorMessage(), cause);
         this.errorCode = errorCode;
     }
 
@@ -55,7 +48,7 @@ public class NuDatException extends Exception {
     /**
      * Get the error code associated with the exception
      *
-     * @return
+     * @return the error code
      */
     public ErrorCode getErrorCode() {
         return this.errorCode;
