@@ -26,7 +26,6 @@ public class NuDatResponse extends NuDatMessage {
      */
     private final int POST_NUM_INDEX = 6;
 
-
     /**
      * The length of a buffer the requires requires in order to read the number of posts integer
      */
@@ -56,7 +55,6 @@ public class NuDatResponse extends NuDatMessage {
      * Mask to get the last byte
      */
     private final int BYTE_MASK = 0xFF;
-
 
     ////////////////////
     // Constructors
@@ -161,7 +159,6 @@ public class NuDatResponse extends NuDatMessage {
         this.posts = posts;
     }
 
-
     /**
      * Set the error code
      *
@@ -170,7 +167,6 @@ public class NuDatResponse extends NuDatMessage {
     public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
-
 
     /**
      * Set the error code by its number
