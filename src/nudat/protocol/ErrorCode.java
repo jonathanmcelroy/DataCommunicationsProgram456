@@ -1,48 +1,77 @@
 package nudat.protocol;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
- * ErrorCode
+ * Posible error codes for the NuDat protocol
  *
- * October 16, 2014
- *
- * @author Jonathan McElroy
  * @version 0.2
+ * @author Jonathan McElroy
  */
 public enum ErrorCode {
     /**
      * Indicates no error
      */
-    NOERROR,
+    NOERROR(0, "No error"),
 
     /**
      * Indicates a message with a bad version was received
      */
-    BADVERSION,
+    BADVERSION(1, "Bad version"),
 
     /**
      * Indicates a message with an unexpected error code was received
      */
-    UNEXPECTEDERRORCODE,
+    UNEXPECTEDERRORCODE(2, "Unexpected error code"),
 
     /**
      * Indicates a message with an unexpected packet type was received
      */
-    UNEXPECTEDPACKETTYPE,
+    UNEXPECTEDPACKETTYPE(3, "Unexpected packet type"),
 
     /**
      * Indicates a message with extraneous trailing bytes was received
      */
-    PACKETTOOLONG,
+    PACKETTOOLONG(4, "Packet too long"),
 
     /**
      * Indicates a message with insufficient bytes was received
      */
-    PACKETTOOSHORT,
+    PACKETTOOSHORT(5, "Packet too short"),
 
     /**
      * Indicates some network error occurred
      */
-    NETWORKERROR;
+    NETWORKERROR(7, "Network error");
+
+    /**
+     * The value of the error code
+     */
+    private final int errorCodeValue;
+
+    /**
+     * The error code message
+     */
+    private final String errorMessage;
+
+    /**
+     * A mapping from the error code value to the error code
+     */
+    private static final Map<Integer, ErrorCode> valueToErrorCode = new HashMap<Integer, ErrorCode>();
+    static {
+        for(ErrorCode code : values()) {
+            valueToErrorCode.put(code.getErrorCodeValue(), code);
+        }
+    }
+
+    /**
+     * Create an error code given its value and message
+     */
+    private ErrorCode(int errorCodeValue, String errorMessage) {
+        this.errorCodeValue = errorCodeValue;
+        this.errorMessage = errorMessage;
+    }
 
     /**
      * Create an error code by giving its error value
@@ -53,24 +82,11 @@ public enum ErrorCode {
      * @throws IllegalArgumentException
      */
     public static ErrorCode getErrorCode(int errorCodeValue) throws IllegalArgumentException {
-        switch(errorCodeValue) {
-        case 0:
-            return NOERROR;
-        case 1:
-            return BADVERSION;
-        case 2:
-            return UNEXPECTEDERRORCODE;
-        case 3:
-            return UNEXPECTEDPACKETTYPE;
-        case 4:
-            return PACKETTOOSHORT;
-        case 5:
-            return PACKETTOOLONG;
-        case 7:
-            return NETWORKERROR;
-        default:
+        ErrorCode code = valueToErrorCode.get(errorCodeValue);
+        if(code == null) {
             throw new IllegalArgumentException("Unknwon error code");
         }
+        return code;
     }
 
     /**
@@ -79,24 +95,7 @@ public enum ErrorCode {
      * @return the value of the error code
      */
     public int getErrorCodeValue() {
-        switch(this) {
-        case NOERROR:
-            return 0;
-        case BADVERSION:
-            return 1;
-        case UNEXPECTEDERRORCODE:
-            return 2;
-        case UNEXPECTEDPACKETTYPE:
-            return 3;
-        case PACKETTOOLONG:
-            return 4;
-        case PACKETTOOSHORT:
-            return 5;
-        case NETWORKERROR:
-            return 7;
-        default:
-            return 0;
-        }
+        return this.errorCodeValue;
     }
 
     /**
@@ -105,24 +104,7 @@ public enum ErrorCode {
      * @return the error message
      */
     public String getErrorMessage() {
-        switch(this) {
-        case NOERROR:
-            return "No error";
-        case BADVERSION:
-            return "Bad version";
-        case UNEXPECTEDERRORCODE:
-            return "Unexpected error code";
-        case UNEXPECTEDPACKETTYPE:
-            return "Unexpected packet type";
-        case PACKETTOOLONG:
-            return "Packet too long";
-        case PACKETTOOSHORT:
-            return "Packet too short";
-        case NETWORKERROR:
-            return "Network error";
-        default:
-            return "Unknown error";
-        }
+        return this.errorMessage;
     }
-
 }
+
