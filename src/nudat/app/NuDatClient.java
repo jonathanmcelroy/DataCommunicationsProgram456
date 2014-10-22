@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import nudat.protocol.NuDatException;
 import nudat.protocol.NuDatQuery;
@@ -22,19 +26,39 @@ public class NuDatClient {
 
         NuDatQuery query = new NuDatQuery(0, responseNumber);
 
-        try(Socket serverSocket = new Socket(serverIP, serverPort)) {
-            MessageOutput out = new MessageOutput(serverSocket.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+        try(DatagramSocket udpServerSocket = new DatagramSocket()) {
+            InetAddress address = null;
+            try {
+                address = InetAddress.getByName(serverIP);
+                //udpServerSocket.connect(address, serverPort);
+            }
+            catch(UnknownHostException e) {
+                System.err.println("Unknown host " + serverIP);
+                System.exit(1);
+            }
+            if(address == null) {
+                System.err.println("Cannot connect to host " + serverIP);
+                System.exit(1);
+            }
 
-            System.out.println(recieveResponse(in));
-            sendQuery(query, out);
-            System.out.println("Here");
-            recieveResponse(in);
-            System.out.println("New Here");
+            System.out.println(1);
 
+            byte[] message = query.encode();
+            DatagramPacket sendPacket = new DatagramPacket(message, message.length, address, serverPort);
+            udpServerSocket.send(sendPacket);
+
+            byte[] receive = new byte[5];
+            DatagramPacket getPacket = new DatagramPacket(receive, receive.length);
+            System.out.println(2);
+            udpServerSocket.receive(getPacket);
+
+            System.out.println(3);
+
+            System.out.println(new String(getPacket.getData()));
             //in.read(byte[] arg0);
         }
         catch(IOException e) {
+            e.printStackTrace();
             System.err.println("Could not communicate to the server");
             System.exit(1);
         }
@@ -46,13 +70,11 @@ public class NuDatClient {
 
     private static void sendQuery(NuDatQuery query, MessageOutput out)
     throws IOException, NuDatException {
-        // TODO Auto-generated method stub
         out.write(query.encode());
 
     }
 
-    private static String recieveResponse(BufferedReader in) throws IOException {
-        // TODO Auto-generated method stub
+    private static String receiveResponse(BufferedReader in) throws IOException {
         return in.readLine();
     }
 }
