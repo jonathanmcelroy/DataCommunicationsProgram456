@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2014-11-04T07:50:22</date>
+  <millis>1415109022457</millis>
+  <sequence>0</sequence>
+  <logger>NuDat</logger>
+  <level>INFO</level>
+  <class>nudat.app.NuDatServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Connection: /127.0.0.1:46024</message>
+</record>
+<record>
+  <date>2014-11-04T07:50:35</date>
+  <millis>1415109035863</millis>
+  <sequence>1</sequence>
+  <logger>NuDat</logger>
+  <level>INFO</level>
+  <class>nudat.app.NuDatServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Connection: /127.0.0.1:35207</message>
+</record>
+<record>
+  <date>2014-11-04T07:50:40</date>
+  <millis>1415109040553</millis>
+  <sequence>2</sequence>
+  <logger>NuDat</logger>
+  <level>INFO</level>
+  <class>nudat.app.NuDatServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Connection: /127.0.0.1:60419</message>
+</record>
+</log>

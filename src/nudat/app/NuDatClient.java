@@ -115,8 +115,8 @@ public class NuDatClient extends NuDatCommunicate {
                 try {
                     // get the response. If it doesn't return after 3 seconds,
                     // raise a socket timeout exception
-                    message = NuDatMessage.decode(receiveMessage(
-                                                      udpServerSocket));
+                    message = NuDatMessage.decode(shortenMessage(
+                                receiveMessage(udpServerSocket)));
                     if(message.getQueryId() == query.getQueryId()) {
                         received  = true;
                     }
@@ -177,30 +177,4 @@ public class NuDatClient extends NuDatCommunicate {
         // send the packet
         udpServerSocket.send(sendPacket);
     }
-
-    /**
-     * Function that receives a message from the datagram socket
-     *
-     * @param udpServerSocket
-     *      is the socket to get the message from
-     * @return an array of bytes containing the packet
-     */
-    //private static byte[] receiveResponse(DatagramSocket udpServerSocket)
-            //throws IOException {
-        //// the message we receive
-        //byte[] receiveBuffer = new byte[MAX_UDP_SIZE];
-
-        //// the packet to place the message in
-        //DatagramPacket getPacket = new DatagramPacket(receiveBuffer,
-                //receiveBuffer.length);
-
-        //// get the next packet
-        //udpServerSocket.receive(getPacket);
-
-        //// place the contents of the packet into a properly sized buffer and
-        //// return it
-        //byte[] received = new byte[getPacket.getLength()];
-        //System.arraycopy(receiveBuffer, 0, received, 0, received.length);
-        //return received;
-    //}
 }
