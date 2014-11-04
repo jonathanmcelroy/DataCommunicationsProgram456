@@ -110,16 +110,6 @@ public class NuDatResponseTest {
     }
 
     /**
-     * Test the response's Constructor with an empty list of posts
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void TestNuDatResponseConstuctorBadPosts2() throws NuDatException {
-        // try to a response with an empty list
-        List<String> list = new ArrayList<String>();
-        new NuDatResponse(ErrorCode.NOERROR, 10, list);
-    }
-
-    /**
      * Test the response's get list of posts
      */
     @Test
@@ -155,16 +145,6 @@ public class NuDatResponseTest {
         List<String> list = null;
         response.setPosts(list);
         Assert.assertEquals(response.getPosts(), list);
-    }
-
-    /**
-     * Test the response's set list of posts with an empty list
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void TestNuDatResponseSetBadPosts2() throws NuDatException {
-        // try to set the posts with an empty list
-        NuDatResponse response = new NuDatResponse(getGoodResponse());
-        response.setPosts(new ArrayList<String>());
     }
 
     /**

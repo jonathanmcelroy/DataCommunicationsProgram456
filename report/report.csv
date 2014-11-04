@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+JaCoCo Ant Example,nudat.protocol.test,NuDatResponseTest,96,192,0,0,0,0,5,9,5,9
+JaCoCo Ant Example,nudat.protocol.test,NuDatQueryTest,61,107,0,0,0,0,4,9,4,9
+JaCoCo Ant Example,nudat.protocol,ErrorCode,10,146,1,3,0,0,2,7,1,6
+JaCoCo Ant Example,nudat.protocol,NuDatMessage,91,196,11,9,0,0,11,14,4,11
+JaCoCo Ant Example,nudat.protocol,NuDatQuery,26,100,1,7,0,0,2,8,1,5
+JaCoCo Ant Example,nudat.protocol,NuDatException,9,11,0,0,0,0,1,2,1,2
+JaCoCo Ant Example,nudat.protocol,NuDatResponse,54,221,3,13,0,0,5,11,2,6
+JaCoCo Ant Example,nudat.app,NuDatClient,246,0,22,0,0,0,16,0,5,0
+JaCoCo Ant Example,nudat.app,NuDatServer,103,0,6,0,0,0,7,0,4,0
+JaCoCo Ant Example,nudat.app,MessageInput,314,0,46,0,0,0,34,0,11,0
+JaCoCo Ant Example,nudat.app,MessageOutput,11,0,0,0,0,0,2,0,2,0

@@ -1,0 +1,15 @@
+Testsuite: nudat.protocol.test.NuDatResponseTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 sec
+
+Testcase: TestNuDatResponseEncode took 0.001 sec
+Testcase: TestNuDatResponseSetPosts took 0 sec
+Testcase: TestNuDatResponseGetPosts took 0.001 sec
+Testcase: TestNuDatResponseConstructorTooLong took 0 sec
+Testcase: TestNuDatResponseToString took 0 sec
+Testcase: TestNuDatResponseConstructorNullBuffer took 0.001 sec
+Testcase: TestNuDatResponseConstuctorBadPosts took 0 sec
+Testcase: TestNuDatResponseConstuctorBadQueryId took 0 sec
+Testcase: TestNuDatResponseSetBadPosts took 0 sec
+Testcase: TestNuDatResponseConstuctorBadQueryId2 took 0 sec
+Testcase: TestNuDatResponseConstuctorBadErrorCode took 0 sec
+Testcase: TestNuDatResponseConstructorTooShort took 0 sec

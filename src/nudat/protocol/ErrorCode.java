@@ -90,13 +90,13 @@ public enum ErrorCode {
     public static ErrorCode getErrorCode(int errorCodeValue) throws IllegalArgumentException {
         ErrorCode code = valueToErrorCode.get(errorCodeValue);
         if(code == null) {
-            throw new IllegalArgumentException("Unknwon error code");
+            throw new IllegalArgumentException("Unknown error code");
         }
         return code;
     }
 
     /**
-     * Get the value cresponding to the ErrorCode
+     * Get the value correspond to the ErrorCode
      *
      * @return the value of the error code
      */

@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
 import java.util.Random;
 
+import nudat.app.NuDatCommunicate;
 import nudat.protocol.ErrorCode;
 import nudat.protocol.NuDatException;
 import nudat.protocol.NuDatQuery;
@@ -23,12 +24,8 @@ import nudat.protocol.NuDatResponse;
  * @author Jonathan McElroy
  * @version 0.2
  */
-public class NuDatClient {
+public class NuDatClient extends NuDatCommunicate {
 
-    /**
-     * The maximum number of bytes we can send in a UDP packet
-     */
-    private static final int MAX_UDP_SIZE = 65507;
 
     /**
      * The maximum number for the query id
@@ -118,7 +115,7 @@ public class NuDatClient {
                 try {
                     // get the response. If it doesn't return after 3 seconds,
                     // raise a socket timeout exception
-                    message = NuDatMessage.decode(receiveResponse(
+                    message = NuDatMessage.decode(receiveMessage(
                                                       udpServerSocket));
                     if(message.getQueryId() == query.getQueryId()) {
                         received  = true;
@@ -188,23 +185,22 @@ public class NuDatClient {
      *      is the socket to get the message from
      * @return an array of bytes containing the packet
      */
-    private static byte[] receiveResponse(DatagramSocket udpServerSocket)
-    throws IOException {
-        // the message we receive
-        byte[] receiveBuffer = new byte[MAX_UDP_SIZE];
+    //private static byte[] receiveResponse(DatagramSocket udpServerSocket)
+            //throws IOException {
+        //// the message we receive
+        //byte[] receiveBuffer = new byte[MAX_UDP_SIZE];
 
-        // the packet to place the message in
-        DatagramPacket getPacket = new DatagramPacket(receiveBuffer,
-        receiveBuffer.length);
+        //// the packet to place the message in
+        //DatagramPacket getPacket = new DatagramPacket(receiveBuffer,
+                //receiveBuffer.length);
 
-        // get the next packet
-        udpServerSocket.receive(getPacket);
+        //// get the next packet
+        //udpServerSocket.receive(getPacket);
 
-        // place the contents of the packet into a properly sized buffer and
-        // return it
-        byte[] received = new byte[getPacket.getLength()];
-        System.arraycopy(receiveBuffer, 0, received, 0, received.length);
-        return received;
-    }
+        //// place the contents of the packet into a properly sized buffer and
+        //// return it
+        //byte[] received = new byte[getPacket.getLength()];
+        //System.arraycopy(receiveBuffer, 0, received, 0, received.length);
+        //return received;
+    //}
 }
-
