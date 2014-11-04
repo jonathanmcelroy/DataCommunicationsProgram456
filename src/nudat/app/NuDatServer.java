@@ -23,8 +23,6 @@ import nudat.protocol.NuDatQuery;
 import nudat.protocol.NuDatMessage;
 import nudat.protocol.NuDatResponse;
 
-// TODO: other logs
-
 /**
  * Server for the NuDat protocol
  *
@@ -73,7 +71,7 @@ public class NuDatServer extends NuDatCommunicate {
         try {
             logger.addHandler(new FileHandler("connections.log"));
         }
-        catch (SecurityException | IOException e) {
+        catch(SecurityException | IOException e) {
             System.err.println("Could not open communications.log for logging");
             System.exit(1);
         }
@@ -97,7 +95,7 @@ public class NuDatServer extends NuDatCommunicate {
                 catch(NuDatException e) {
                     // If the packet cannot decode, send a response with the error
                     sendError(e.getErrorCode(), 0, clientAddress, clientPort,
-                            udpSocket);
+                              udpSocket);
 
                     // get the next query
                     continue;
@@ -106,7 +104,7 @@ public class NuDatServer extends NuDatCommunicate {
                 // If the packet was of the wrong type, sent a response with the error
                 if(!(message instanceof NuDatQuery)) {
                     sendError(ErrorCode.UNEXPECTEDPACKETTYPE, 0, clientAddress,
-                            clientPort, udpSocket);
+                              clientPort, udpSocket);
 
                     // get the next query
                     continue;
@@ -121,35 +119,38 @@ public class NuDatServer extends NuDatCommunicate {
                 // get the number of posts from the query
                 int numPosts = query.getRequestedPosts();
 
-                // get the posts from twitter
-                ResponseList<Status> statuses = null;
-                try {
-                    statuses = twitter.getUserTimeline("432fun",
-                            new Paging(1, numPosts));
-                }
-                catch(TwitterException e) {
-                    // If we cannot communicate with twitter, send a network error to the client
-                    sendError(ErrorCode.NETWORKERROR, queryId, clientAddress,
-                            clientPort, udpSocket);
-                    
-                    // get the next query
-                    continue;
-                }
 
-                // Get an array of strings from the post and add up the length of the strings
-                int length = 0;
+                // The array of posts
                 ArrayList<String> posts = new ArrayList<String>();
-                for(Status status : statuses) {
-                    String text = status.getText();
-                    posts.add(text);
-                    length += 2 + text.length();
+
+                // If the client wants more than 0 posts
+                if(numPosts > 0) {
+                    // get the posts from twitter
+                    ResponseList<Status> statuses = null;
+                    try {
+                        statuses = twitter.getUserTimeline("432fun",
+                                                           new Paging(1, numPosts));
+                    }
+                    catch(TwitterException e) {
+                        // If we cannot communicate with twitter, send a network error to the client
+                        sendError(ErrorCode.NETWORKERROR, queryId, clientAddress,
+                                  clientPort, udpSocket);
+
+                        // get the next query
+                        continue;
+                    }
+
+                    // Get an array of strings from the post and add up the length of the strings
+                    for(Status status : statuses) {
+                        posts.add(status.getText());
+                    }
                 }
 
                 // create the the response to the client
                 NuDatResponse response = null;
                 try {
                     response = new NuDatResponse(ErrorCode.NOERROR, queryId,
-                            posts);
+                                                 posts);
                 }
                 catch(IllegalArgumentException e) {
                     continue;
@@ -208,7 +209,7 @@ public class NuDatServer extends NuDatCommunicate {
 
     /**
      * Function that sends a error response to the client
-     * 
+     *
      * @param e
      *      the error code
      * @param queryId
@@ -232,12 +233,6 @@ public class NuDatServer extends NuDatCommunicate {
 
 
 }
-
-
-
-
-
-
 
 
 

@@ -2,36 +2,69 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2014-11-04T07:50:22</date>
-  <millis>1415109022457</millis>
+  <date>2014-11-04T09:36:10</date>
+  <millis>1415115370428</millis>
   <sequence>0</sequence>
   <logger>NuDat</logger>
   <level>INFO</level>
   <class>nudat.app.NuDatServer</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Connection: /127.0.0.1:46024</message>
+  <message>Connection: /127.0.0.1:35594</message>
 </record>
 <record>
-  <date>2014-11-04T07:50:35</date>
-  <millis>1415109035863</millis>
+  <date>2014-11-04T09:36:19</date>
+  <millis>1415115379260</millis>
   <sequence>1</sequence>
   <logger>NuDat</logger>
   <level>INFO</level>
   <class>nudat.app.NuDatServer</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Connection: /127.0.0.1:35207</message>
+  <message>Connection: /127.0.0.1:39896</message>
 </record>
 <record>
-  <date>2014-11-04T07:50:40</date>
-  <millis>1415109040553</millis>
+  <date>2014-11-04T09:36:24</date>
+  <millis>1415115384266</millis>
   <sequence>2</sequence>
   <logger>NuDat</logger>
   <level>INFO</level>
   <class>nudat.app.NuDatServer</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Connection: /127.0.0.1:60419</message>
+  <message>Connection: /127.0.0.1:57080</message>
+</record>
+<record>
+  <date>2014-11-04T09:36:29</date>
+  <millis>1415115389455</millis>
+  <sequence>3</sequence>
+  <logger>NuDat</logger>
+  <level>INFO</level>
+  <class>nudat.app.NuDatServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Connection: /127.0.0.1:58760</message>
+</record>
+<record>
+  <date>2014-11-04T09:36:35</date>
+  <millis>1415115395768</millis>
+  <sequence>4</sequence>
+  <logger>NuDat</logger>
+  <level>INFO</level>
+  <class>nudat.app.NuDatServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Connection: /127.0.0.1:47748</message>
+</record>
+<record>
+  <date>2014-11-04T09:38:26</date>
+  <millis>1415115506443</millis>
+  <sequence>5</sequence>
+  <logger>NuDat</logger>
+  <level>INFO</level>
+  <class>nudat.app.NuDatServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Connection: /127.0.0.1:49022</message>
 </record>
 </log>

@@ -116,7 +116,7 @@ public class NuDatClient extends NuDatCommunicate {
                     // get the response. If it doesn't return after 3 seconds,
                     // raise a socket timeout exception
                     message = NuDatMessage.decode(shortenMessage(
-                                receiveMessage(udpServerSocket)));
+                                                      receiveMessage(udpServerSocket)));
                     if(message.getQueryId() == query.getQueryId()) {
                         received  = true;
                     }
@@ -148,7 +148,7 @@ public class NuDatClient extends NuDatCommunicate {
             System.err.println("Problem communicating with the server");
             System.exit(1);
         }
-        catch(NuDatException e) {
+        catch(IllegalArgumentException | NuDatException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
@@ -178,3 +178,5 @@ public class NuDatClient extends NuDatCommunicate {
         udpServerSocket.send(sendPacket);
     }
 }
+
+
